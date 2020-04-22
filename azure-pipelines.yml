@@ -84,7 +84,7 @@ stages:
               useConfigurationFile: true
               configurationType: 'inline'
               inline: |
-                apiVersion: apps/v1
+                apiVersion: apps/latest
                 kind: Deployment
                 metadata:
                   name: $(imageRepository)
@@ -131,7 +131,7 @@ stages:
               useConfigurationFile: true
               configurationType: 'inline'
               inline: |
-                apiVersion: v1
+                apiVersion: latest
                 kind: Service
                 metadata:
                   name: $(imageRepository)
