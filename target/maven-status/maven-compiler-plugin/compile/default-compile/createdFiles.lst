@@ -1,0 +1,10 @@
+warehousepf\AbstractEvent.class
+warehousepf\Application.class
+warehousepf\Delivery.class
+warehousepf\external\WarehouseService.class
+warehousepf\config\kafka\KafkaProcessor.class
+warehousepf\Delivered.class
+warehousepf\PolicyHandler.class
+warehousepf\DeliveryRepository.class
+warehousepf\DeliveryController.class
+warehousepf\external\Warehouse.class
