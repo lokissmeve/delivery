@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: delivery
-          image: admin11acr.azurecr.io/delivery:latest
+          image: admin11acr.azurecr.io/delivery
           ports:
             - containerPort: 8080
           readinessProbe:
