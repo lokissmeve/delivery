@@ -12,7 +12,7 @@ import java.util.Date;
  * Created by uengine on 2018. 11. 21..
  */
 
-//@FeignClient(name="", url="http://:8080")
+@FeignClient(name="stockRequest", url="http://:8082")
 public interface WarehouseService {
 
     @RequestMapping(method= RequestMethod.GET, path="/warehouses")

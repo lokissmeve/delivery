@@ -1,7 +1,17 @@
 package warehousepf;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cloud.stream.messaging.Processor;
+import org.springframework.messaging.MessageChannel;
+import org.springframework.messaging.MessageHeaders;
+import org.springframework.messaging.support.MessageBuilder;
+import org.springframework.util.MimeTypeUtils;
+import warehousepf.external.WarehouseService;
+
 import java.util.List;
 
 @Entity
@@ -16,44 +26,14 @@ public class Delivery {
 
     @PostPersist
     public void onPostPersist(){
-        Delivered delivered = new Delivered();
-        BeanUtils.copyProperties(this, delivered);
-        delivered.publish();
+        Delivered reserved = new Delivered();
+        BeanUtils.copyProperties(this, reserved);
+        reserved.publish();
 
-        //Following code causes dependency to external APIs
-        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
-
-//        warehousepf.external.Warehouse warehouse = new warehousepf.external.Warehouse();
-//        // mappings goes here
-//        Application.applicationContext.getBean(warehousepf.external.WarehouseService.class)
-//            .stockRequest(warehouse);
-
-//        OrderPlaced orderPlaced = new OrderPlaced();
-//        orderPlaced.setId(this.getId());
-//        orderPlaced.setConsumerName(this.getConsumerName());
-//        orderPlaced.setProductId(this.getProductId());
-//        orderPlaced.setProductName(this.getProductName());
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        String json = null;
-//
-//        try {
-//            json = objectMapper.writeValueAsString(orderPlaced);
-//        } catch (JsonProcessingException e) {
-//            throw new RuntimeException("JSON format exception", e);
-//        }
-//        System.out.println(json);
-//
-//        Processor processor = DemoApplication.applicationContext.getBean(Processor.class);
-//        MessageChannel outputChannel = processor.output();
-//
-//        outputChannel.send(MessageBuilder
-//                .withPayload(json)
-//                .setHeader(MessageHeaders.CONTENT_TYPE, MimeTypeUtils.APPLICATION_JSON)
-//                .build());
-
-
+        warehousepf.external.Warehouse payProcessing = new  warehousepf.external.Warehouse();
+        Application.applicationContext.getBean(warehousepf.external.WarehouseService.class)
+                .stockRequest(payProcessing);
     }
-
 
     public Long getId() {
         return id;
@@ -76,5 +56,4 @@ public class Delivery {
     public void setQty(Integer qty) {
         this.qty = qty;
     }
-
 }
